@@ -11,7 +11,7 @@ app.use(express.json());
 
 
 
-app.use('/api/notes', noteRoutes);
+app.use('/api/ideas', ideaRoutes);
 
 
 export default app;

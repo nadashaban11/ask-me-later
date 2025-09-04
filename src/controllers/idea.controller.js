@@ -1,51 +1,64 @@
-
 import { Idea } from "../models/idea.model.js";
 
-export async function getAllIdeas(req,res){
-    const ideas = await Idea.find();
-
-    res.status(200).json(ideas);
-};
-
-
-export async function getIdeaById(req,res) {
-    const id = req.params.id;
-    const idea = await Idea.findById(id);
-
-    if(idea){
-        res.status(200).json(note);
-    }else{
-        res.status(404).json({error : 'Idea not found'});
+export async function getAllIdeas(req, res) {
+    try {
+        const ideas = await Idea.find();
+        res.status(200).json(ideas);
+    } catch (err) {
+        res.status(500).json({ message: "Error retrieving your ideas" });
     }
-
 }
 
+export async function getIdeaById(req, res) {
+    const id = req.params.id;
 
-export async function addIdea(req,res){
-    const newIdea = new Idea(req.body);
-    await newIdea.save();
-
-    res.status(201).json(newIdea);
+    try {
+        const idea = await Idea.findById(id);
+        if (idea) {
+            res.status(200).json(idea);
+        } else {
+            res.status(404).json({ error: "Idea not found" });
+        }
+    } catch (err) {
+        res.status(500).json({ error: "Invalid ID" });
+    }
 }
 
+export async function addIdea(req, res) {
+    try {
+        const newIdea = new Idea(req.body);
+        await newIdea.save();
+        res.status(201).json(newIdea);
+    } catch (err) {
+        res.status(500).json({ error: "Error adding idea" });
+    }
+}
 
-export async function updateIdea(req,res){
+export async function updateIdea(req, res) {
+    const id = req.params.id;
     const updatedIdea = req.body;
-    const id = req.params.id;
 
-    await Idea.updateOne({_id : id}, updateIdea)
-        .then(()=>{
-            res.status(200).json({message : 'Idea updated successfully'});
-        });
+    try {
+        const idea = await Idea.findByIdAndUpdate(id, updatedIdea, { new: true });
+        if (!idea) {
+            return res.status(404).json({ error: "Idea not found" });
+        }
+        res.status(200).json({ message: "Idea updated successfully", idea });
+    } catch (err) {
+        res.status(500).json({ error: "Error updating idea" });
+    }
 }
 
-export async function deleteIdea(req,res) {
+export async function deleteIdea(req, res) {
     const id = req.params.id;
 
-    const oldIdea = await Idea.findById(id);
-
-    await Idea.deleteOne(oldIdea).then(()=>{
-        res.status(200).json({message : 'idea deleted successfully'})
-    })
+    try {
+        const idea = await Idea.findByIdAndDelete(id);
+        if (!idea) {
+            return res.status(404).json({ error: "Idea not found" });
+        }
+        res.status(200).json({ message: "Idea deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ error: "Error deleting idea" });
+    }
 }
-
