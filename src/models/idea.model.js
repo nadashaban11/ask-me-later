@@ -18,7 +18,7 @@ const ideaSchema = new mongoose.Schema({
     },
     priority : {
         type : String,
-        enum : ['low' , 'mid' , 'high'],
+        enum : ['low' , 'medium' , 'high'],
         default : 'mid'
     },
 },
