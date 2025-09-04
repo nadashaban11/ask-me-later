@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { type } from "os";
 
 
-const noteSchema = new mongoose.Schema({
+const ideaSchema = new mongoose.Schema({
     content : {
         type:String,
         required:true
@@ -30,7 +30,7 @@ const noteSchema = new mongoose.Schema({
 
 
 
-const Note = mongoose.model('Note', noteSchema);
+const Idea = mongoose.model('Idea', ideaSchema);
 
-export {Note};
+export {Idea};
 
