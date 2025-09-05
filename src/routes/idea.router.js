@@ -6,7 +6,7 @@ const ideaRouter = express.Router();
 
 ideaRouter.route('/')
     .get(ideaController.getAllIdeas)
-    .post(validateIdea, ideaController.addIdea);
+    .post(validateIdea(), ideaController.addIdea);
 
 ideaRouter.route('/:id')
     .get(ideaController.getIdeaById)
