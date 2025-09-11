@@ -1,30 +1,37 @@
 import mongoose from "mongoose";
-import { type } from "os";
 
 
 const ideaSchema = new mongoose.Schema({
-    content : {
-        type:String,
-        required:true
+    content: {
+        type: String,
+        required: [true, "Content is required"],
+        minlength: [3, "Content must be at least 3 characters"],
+        maxlength: [500, "Content must not exceed 500 characters"],
+        trim: true,
     },
-    reminderMeAt : {
-        type : Date,
-        required : false
+    reminderMeAt: {
+        type: Date,
     },
-    status : {
-        type : String,
-        enum : ['pinding' , 'done'],
-        default : 'pinding'
+    status: {
+        type: String,
+        enum: ["pending", "done"],
+        default: 'pending'
     },
-    priority : {
-        type : String,
-        enum : ['low' , 'medium' , 'high'],
-        default : 'mid'
+    priority: {
+        type: String,
+        enum: ['low', 'medium', 'high'],
+        default: 'mid'
     },
+    tags: [
+        {
+            type: String,
+            trim: true,
+        },
+    ],
 },
-{
-    timestamps : true
-}
+    {
+        timestamps: true
+    }
 
 );
 
@@ -32,5 +39,5 @@ const ideaSchema = new mongoose.Schema({
 
 const Idea = mongoose.model('Idea', ideaSchema);
 
-export {Idea};
+export { Idea };
 
