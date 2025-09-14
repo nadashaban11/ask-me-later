@@ -20,7 +20,7 @@ const ideaSchema = new mongoose.Schema({
     priority: {
         type: String,
         enum: ['low', 'medium', 'high'],
-        default: 'midium'
+        default: 'medium'
     },
     tags: [
         {
