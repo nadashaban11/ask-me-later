@@ -1,5 +1,5 @@
 
-const User = require('../models/user.model.js');
+import User from '../models/user.model.js';
 
 
 export async function signUp(req,res) {
@@ -25,5 +25,5 @@ export async function signUp(req,res) {
     catch(error){
         res.status(500).json({ success: false, message: "Error registering user", error: err.message });
     }
-    
+
 };
