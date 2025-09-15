@@ -2,7 +2,7 @@ import { Idea } from "../models/idea.model.js";
 
 export async function getAllIdeas(req, res) {
     try {
-        const ideas = await Idea.find();
+        const ideas = await Idea.find({user : req.user._id});
         res.status(200).json({ success: true, data: ideas });
     } catch (err) {
         res.status(500).json({ success: false, message: "Error retrieving ideas" });
@@ -26,7 +26,7 @@ export async function getIdeaById(req, res) {
 
 export async function addIdea(req, res) {
     try {
-        const newIdea = new Idea(req.body);
+        const newIdea = new Idea({...req.body, user: req.user._id});
         await newIdea.save();
         res.status(201).json({ success: true, message: "Idea added successfully", data: newIdea });
     } catch (err) {

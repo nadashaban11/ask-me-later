@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+import User from "./user.model.js";
 
 const ideaSchema = new mongoose.Schema({
     content: {
@@ -28,6 +29,11 @@ const ideaSchema = new mongoose.Schema({
             trim: true,
         },
     ],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    }
 },
     {
         timestamps: true
