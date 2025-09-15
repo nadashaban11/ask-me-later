@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import jwt from "jsonwebtoken";
 
 import User from '../models/user.model.js';
 
@@ -42,12 +43,12 @@ export async function signIn(req, res){
             return res.status(400).json({ success: false, message: "Invalid email or password" });
         }
 
-        const userRes = user.toObject();
-        delete userRes.password;
+        const token = jwt.sign({id : user._id}, process.env.JWT_SECRET, {expiresIn : '3d'});
 
         res.status(200).json({
             success: true,
             message: "User logged in successfully",
+            token,
             user: userRes
         });
     }
