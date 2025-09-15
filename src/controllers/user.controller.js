@@ -21,11 +21,13 @@ export async function signUp(req,res) {
         const newUser = new User({name, email, password});
         await newUser.save();
 
-        res.status(201).json({ success: true, message: "User signed up successfully", data: newUser });
+        const token = jwt.sign({id : newUser._id}, process.env.JWT_SECRET, {expiresIn : '3d'});
+
+        res.status(201).json({ success: true, message: "User signed up successfully",token, data: newUser });
     }
 
     catch(error){
-        res.status(500).json({ success: false, message: "Error registering user", error: err.message });
+        res.status(500).json({ success: false, message: "Error registering user", error: error.message });
     }
 
 };
@@ -38,7 +40,7 @@ export async function signIn(req, res){
             return res.status(400).json({ success: false, message: "Invalid email or password" });
         }
 
-        const samePass = bcrypt.compare(password, user.password);
+        const samePass = await bcrypt.compare(password, user.password);
         if(!samePass){
             return res.status(400).json({ success: false, message: "Invalid email or password" });
         }
@@ -49,10 +51,13 @@ export async function signIn(req, res){
             success: true,
             message: "User logged in successfully",
             token,
-            user: userRes
+            user: {
+                name: user.name,
+                email: user.email
+            }
         });
     }
     catch(error){
-        res.status(500).json({ success: false, message: "Server error", error: err.message });
+        res.status(500).json({ success: false, message: "Server error", error: error.message });
     }
 };
