@@ -14,7 +14,6 @@ export function validateSignUp() {
 
     body("password")
       .notEmpty().withMessage("Password is required")
-      .isLength({ min: 8 }).withMessage("Password must be at least 8 characters")
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
       .withMessage("Password must be at least 8 chars, include uppercase, lowercase, number, and special char"),
 

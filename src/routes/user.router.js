@@ -9,3 +9,5 @@ const userRouter = express.Router();
 
 userRouter.post('/signUp', validateSignUp(), signUp);
 userRouter.post('/signIn', validateSignIn(), signIn);
+
+export default userRouter;
